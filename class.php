@@ -25,12 +25,14 @@ class CronJob {
         file_put_contents('/tmp/crontab.txt', $cronTab);
         shell_exec('crontab /tmp/crontab.txt');
     }
-    
+
     public function delete() {
         $cronTab = shell_exec('crontab -l');
         $cronTab = str_replace($this->frequency." ".$this->command." > ".$this->outputFile."\n","",$cronTab);
-        file_put_contents('/tmp/crontab.txt', $cronTab);
-        shell_exec('crontab /tmp/crontab.txt');
+        if ($cronTab !== false) {
+            file_put_contents('/tmp/crontab.txt', $cronTab);
+            shell_exec('crontab /tmp/crontab.txt');
+        }
     }
 }
 
